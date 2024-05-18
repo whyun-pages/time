@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>JS时间戳</title>  
+		<meta name="Author" content="sunny">
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<script type="text/javascript" src="js/sjs.js"></script>
+	</head>
+<body>
+	输入：<input type="text" id="input1" value="" /><br />
+	结果：<input type="text" id="input2" value="" /><br />
+	<input type="button" value="时间戳转时间" id="unixToTime" /><br />
+	输入：<input type="text" id="timeStr" value="" /><br />
+	结果：<input type="text" id="toStamp" value=""><br />
+	<input type="button" value="时间转时间戳" id="timeToUnix" /><br />
+	<script type="text/javascript">
+		function datetime_to_unix(datetime){
+			
+			var tmp_datetime = datetime.replace(/:/g,'-');
+			if (tmp_datetime.indexOf(' ') !== -1) {
+				tmp_datetime = tmp_datetime.replace(/ /g,'-');
+			}
+			
+			var arr = tmp_datetime.split("-");
+			var now = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+			return parseInt(now.getTime());
+		}
+		 
+		function unix_to_datetime(unix) {
+			var now = new Date(parseInt(unix.replace(/,/g, ''), 10));
+			return now.getFullYear() + '-' + (now.getMonth() + 1) +'-' 
+			+ now.getDate() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+		}
+		var timeNow = new Date();
+		SJS.$('input1').value = timeNow.getTime();
+		SJS.$('unixToTime').onclick = function() {
+			SJS.$('input2').value = unix_to_datetime(SJS.$('input1').value);
+		};
+		SJS.$('timeStr').value = timeNow.getFullYear() + '-' + (timeNow.getMonth() + 1) +'-' 
+		+ timeNow.getDate() + ' ' + timeNow.getHours() + ':' + timeNow.getMinutes() + ':' + timeNow.getSeconds();
+
+		SJS.$('timeToUnix').onclick = function() {
+			var str = SJS.$('timeStr').value;
+			if (str) {
+				var nd = str.replace(/-/ig,'/'); 
+				var time= new Date(nd);
+				SJS.$('toStamp').value = time.getTime();
+			}
+		}
+	</script>
+</body>
+</html>
